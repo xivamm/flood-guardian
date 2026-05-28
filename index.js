@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Flood Guardian Online");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`📡 Health server listening on port ${PORT}`);
 });
 
