@@ -50,13 +50,13 @@ async function checkRainfall() {
       else stormRelevance = "Inside PAR. Monitoring movement.";
     }
 
-    // --- PART 2: Detailed Local Weather (Gen T de Leon / Valenzuela) ---
+    // --- PART 2: Detailed Local Weather (Valenzuela, Philippines) ---
     const local = await getDetailedLocalWeather();
     let localWeatherStr = "Local metrics unavailable.";
     if (local) {
       localWeatherStr = 
 `📍 <b>GEN T. DE LEON AREA</b>
-🌡️ <b>Temp:</b> ${local.temp}°C
+🌡️ <b>Temp:</b> ${local.temp}°C (Feels like ${local.feelsLike}°C)
 🌬️ <b>Wind:</b> ${local.windSpeed} km/h
 💧 <b>Humidity:</b> ${local.humidity}%
 🌧️ <b>Rainfall:</b> ${local.rainMM}mm (${getRainIntensity(local.rainMM)})
@@ -84,7 +84,7 @@ ${localWeatherStr}
 
 🔗 <a href="${WEATHER_URL}">🔗 Source (PAGASA)</a>
 
-${warning || (local && parseFloat(local.rainMM) > 7.5) ? "⚠️ May active weather concern. Ingat po!" : "☀️ Mukhang stable ang panahon."}`;
+${warning || (local && parseFloat(local.rainMM) > 3.0) ? "⚠️ May active weather concern. Ingat po!" : "☀️ Mukhang stable ang panahon."}`;
 
     const stormUpdate = 
 `${testHeader}🌀 <b>STORM WATCH</b>
@@ -108,11 +108,11 @@ ${stormName ? "Stay tuned to PAGASA updates. Secure items." : "Safe and clear fo
     if (warning && warning !== state.lastRainWarning) shouldAlert = true;
     if (stormName && stormName !== state.lastStormName) shouldAlert = true;
     
-    // Proactive Alert for Heavy Local Rain (even if PAGASA is silent)
-    if (local && parseFloat(local.rainMM) >= 7.5 && !state.lastLocalRainAlerted) {
+    // Proactive Alert for Heavy Local Rain (Threshold lowered for earlier warning)
+    if (local && parseFloat(local.rainMM) >= 3.0 && !state.lastLocalRainAlerted) {
       shouldAlert = true;
       state.lastLocalRainAlerted = true;
-    } else if (local && parseFloat(local.rainMM) < 2.5) {
+    } else if (local && parseFloat(local.rainMM) < 1.0) {
       state.lastLocalRainAlerted = false;
     }
 
