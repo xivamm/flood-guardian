@@ -1,0 +1,165 @@
+{
+  "lastRainWarning": null,
+  "lastLaMesaLevel": 79.87,
+  "lastUgongLevel": 0,
+  "latestDashboard": "🛟 <b>FLOOD GUARDIAN DASHBOARD</b>\n━━━━━━━━━━━━━━\n\n📍 <b>Tullahan / Valenzuela side</b>\n🌊 <b>River Status:</b>\n• La Mesa: 🔴 CRITICAL (79.87)\n• Ugong influence: ⚪ OFFLINE (0.00)\n\n📈 <b>Trend:</b> ➡ Stable\n🌧 <b>Weather:</b> 🟢 Normal\n\n🧠 <b>FLOOD RISK:</b> 40%\n👀 <b>OBSERVE MODE</b>\n🟨🟨🟨🟨⬜⬜⬜⬜⬜⬜\n\n💡 <b>Why?</b>\n• High upstream water\n\n👥 <b>Community Reports (Last 3h):</b>\n• None: 1 report\n\n❤️ <b>Advice:</b>\nObserve mode — check for updates.",
+  "latestRiverUpdate": "🌊 <b>RIVER DETAILS</b>\n━━━━━━━━━━━━━━\n<b>La Mesa:</b> 79.87m\n<b>Status:</b> CRITICAL\n\n<b>Community Feedback:</b>\n• None: 1 report",
+  "latestWeatherUpdate": "🌦 <b>WEATHER & FORECAST</b>\n━━━━━━━━━━━━━━\n📍 <b>Area:</b> NCR / Valenzuela\n📢 <b>Live Status:</b> 🟢 NO RAIN WARNING\n\n🔮 <b>Forecast (Next 24h):</b>\nMonsoon rains (Habagat) expected.\n\n☀️ Mukhang stable ang panahon.",
+  "latestTrendUpdate": "📈 <b>MOVEMENT & TREND</b>\n━━━━━━━━━━━━━━\n<b>Movement:</b> ➡ Stable\n<b>Last:</b> 79.87m\n<b>New:</b> 79.87m",
+  "latestPredictionUpdate": "🧠 <b>FLOOD PREDICTION</b>\n━━━━━━━━━━━━━━\n<b>Forecast:</b> Stable\n<b>Confidence:</b> 85%\n\n💡 <b>Reasons:</b>\n• Environment is stable\n\n❤️ <b>Advice:</b>\nMag-ingat po parati.\n\n📍 Tullahan / Valenzuela side",
+  "latestStormUpdate": "🌀 <b>STORM WATCH</b>\n━━━━━━━━━━━━━━\n<b>Status:</b> Tropical storm jangmi\n<b>Relevance:</b> Enhancing Southwest Monsoon (Habagat). Expect heavy rains.\n\n💡 <b>Tullahan/Valenzuela Risk:</b>\n⚠️ Possible river rise due to enhanced monsoon or direct rain.\n\n❤️ <b>Advice:</b>\nStay tuned to PAGASA updates. Secure outdoor items.",
+  "lastDashboardSnapshot": "{\"laMesaStatus\":\"CRITICAL\",\"rainfall\":\"NONE\",\"trendText\":\"➡ Stable\",\"score\":40,\"predictionStatus\":\"Stable\"}",
+  "lastUpdateId": 676915901,
+  "history": [
+    {
+      "timestamp": "2026-05-28T07:08:05.117Z",
+      "laMesaLevel": 79.86,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:08:35.032Z",
+      "laMesaLevel": 79.86,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:10:23.708Z",
+      "laMesaLevel": 79.86,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:13:03.155Z",
+      "laMesaLevel": 79.35,
+      "ugongLevel": 14.9,
+      "rainfall": "ORANGE",
+      "score": 55,
+      "trend": "⬇ Lowering (0.51m)",
+      "isTest": true
+    },
+    {
+      "timestamp": "2026-05-28T07:14:29.203Z",
+      "laMesaLevel": 79.86,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "⬆ Rising (+0.51m)",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:18:29.054Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:23:24.153Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:28:19.764Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:29:35.038Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:30:18.208Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 60,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:31:28.194Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:35:13.310Z",
+      "laMesaLevel": 79.87,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
+    }
+  ],
+  "lastAlertedStatus": "Stable",
+  "lastAlertTime": 1779952699317,
+  "communityReports": [
+    {
+      "chatId": 5543161340,
+      "depth": "None",
+      "timestamp": 1779953477501
+    }
+  ],
+  "shadowLogs": [
+    {
+      "timestamp": "2026-05-28T07:28:19.764Z",
+      "prediction": "Possible Rise 👀",
+      "outcome": "Correct",
+      "rise": "0.01",
+      "rainfall": null
+    }
+  ],
+  "isTestMode": false,
+  "testMockData": null,
+  "health": {
+    "riverMonitor": "Online",
+    "weatherMonitor": "Online",
+    "lastCheck": 1779953703141,
+    "lastSuccessfulRiverCheck": 1779953703141,
+    "lastSuccessfulWeatherCheck": 1779953688262,
+    "watchdogAlerted": false,
+    "weatherStaleAlerted": false,
+    "riverStaleAlerted": false
+  },
+  "lastLaMesaStatus": null,
+  "lastUgongStatus": null,
+  "lastForecast": "Monsoon rains (Habagat) expected.",
+  "lastTyphoonSignal": null,
+  "lastStormName": "jangmi",
+  "lastShadowPrediction": {
+    "timestamp": 1779953299764,
+    "status": "Stable",
+    "level": 79.87,
+    "rainfall": null
+  },
+  "latestChecklist": "📋 <b>✅ ALL CLEAR</b>\n━━━━━━━━━━━━━━\nEnvironment is stable. Chill mode muna.\n\n• No immediate actions needed.\n\n❤️ <b>Stay safe, Tullahan!</b>"
+}

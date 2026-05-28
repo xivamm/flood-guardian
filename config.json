@@ -1,0 +1,18 @@
+{
+  "areaName": "Tullahan / Valenzuela side",
+  "nearbyRiver": "Ugong influence",
+  "floodSensitivity": "medium",
+  "language": "Tagalog",
+  "customAdvice": "Mag-ingat po parati.",
+  "characteristics": {
+    "primaryRisk": "River overflowing and drainage backflow",
+    "triggers": ["Habagat rains", "La Mesa Dam release", "Sustained heavy rainfall"]
+  },
+  "directory": {
+    "Rescue": "8352-2475",
+    "Police": "8352-4000",
+    "Fire": "8292-7385",
+    "Red Cross": "8343-4612"
+  },
+  "mapLink": "https://www.valenzuela.gov.ph/hazard_map"
+}

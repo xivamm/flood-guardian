@@ -1,0 +1,47 @@
+name: Flood Guardian
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+  push:
+    branches:
+      - main
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install packages
+        run: npm install
+
+      - name: Run Flood Guardian
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+        run: |
+          # We run a modified version for GitHub Actions that doesn't loop forever
+          # but just runs the checks once and exits.
+          GITHUB_ACTIONS_RUN=true node index.js
+
+      - name: Commit and Push State
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add state/latest.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update state [skip ci]" && git push)
+ 
