@@ -50,9 +50,9 @@ export const KEYBOARDS = {
   main: {
     keyboard: [
       [{ text: "/status" }, { text: "/predict" }, { text: "/trend" }],
-      [{ text: "/weather" }, { text: "/storm" }, { text: "/map" }],
+      [{ text: "/weather" }, { text: "/storm" }, { text: "/windy" }],
       [{ text: "/checklist" }, { text: "/report" }, { text: "/emergency" }],
-      [{ text: "/help" }, { text: "/history" }]
+      [{ text: "/map" }, { text: "/help" }, { text: "/history" }]
     ],
     resize_keyboard: true,
     persistent: true

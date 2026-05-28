@@ -85,6 +85,19 @@ export async function checkCommands() {
         case "/storm":
           await sendTelegram(freshState.latestStormUpdate || "🌀 No storm data yet.", chatId, KEYBOARDS.main);
           break;
+        case "/windy":
+          const windyMsg = 
+`🌬 <b>WINDY VISUAL MAPS</b>
+━━━━━━━━━━━━━━━━
+Get high-quality visual weather data directly for our area.
+
+🛰 <a href="https://www.windy.com/14.694/120.962?radar,14.678,120.962,11">Live Weather Radar</a>
+🌧 <a href="https://www.windy.com/14.694/120.962?rain,14.678,120.962,11">Rain Accumulation</a>
+💨 <a href="https://www.windy.com/14.694/120.962?wind,14.678,120.962,11">Wind Speed & Gusts</a>
+
+<i>Note: Map is centered on Valenzuela / Tullahan area.</i>`;
+          await sendTelegram(windyMsg, chatId, KEYBOARDS.main);
+          break;
         case "/accuracy":
           await sendTelegram(getAccuracyStats(freshState), chatId);
           break;
@@ -145,8 +158,9 @@ export async function checkCommands() {
 /history - Logs
 
 🌧 <b>WEATHER</b>
-/weather - Rainfall
-/storm - Cyclone
+/weather - Rainfall Update
+/storm - Cyclone Watch
+/windy - Live Visual Maps
 /map - Hazard Map
 
 🚨 <b>EMERGENCY</b>
