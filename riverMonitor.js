@@ -36,6 +36,9 @@ async function checkRiver() {
   const now = Date.now();
   const testHeader = state.isTestMode ? "🧪 <b>TEST MODE</b>\n<i>Simulation only. No real flood detected.</i>\n\n" : "";
 
+  const RIVER_URL = "https://pasig-marikina-tullahanffws.pagasa.dost.gov.ph/water/table.do";
+  const WEATHER_URL = "https://www.pagasa.dost.gov.ph";
+
   try {
     let laMesa = null;
     let ugong = null;
@@ -53,7 +56,7 @@ async function checkRiver() {
       });
 
       const page = await browser.newPage();
-      await page.goto("https://pasig-marikina-tullahanffws.pagasa.dost.gov.ph/water/table.do", {
+      await page.goto(RIVER_URL, {
         waitUntil: "networkidle2",
         timeout: 60000
       });
@@ -81,25 +84,13 @@ async function checkRiver() {
     laMesaStatus = laMesa ? getStatus(laMesa.current, laMesa.alert, laMesa.alarm, laMesa.critical) : "UNKNOWN";
     ugongStatus = ugong && ugong.current > 0 ? getStatus(ugong.current, ugong.alert, ugong.alarm, ugong.critical) : "OFFLINE";
 
-    // Community Reports
-    const threeHours = 3 * 60 * 60 * 1000;
-    if (!state.communityReports) state.communityReports = [];
-    state.communityReports = state.communityReports.filter(r => (now - r.timestamp) < threeHours);
-    const counts = state.communityReports.reduce((acc, r) => { acc[r.depth] = (acc[r.depth] || 0) + 1; return acc; }, {});
-    
-    let commReportStr = "";
-    if (state.communityReports.length > 0) {
-      commReportStr = `🟢 Passable: ${counts.None || 0}\n🟡 Ankle: ${counts.Sakong || 0}\n🟠 Knee: ${counts.Tuhod || 0}\n🔴 High: ${(counts.Tao || 0) + (counts.Lagpas || 0)}`;
-    } else {
-      commReportStr = "No reports from residents yet.";
-    }
+    const counts = (state.communityReports || []).reduce((acc, r) => { acc[r.depth] = (acc[r.depth] || 0) + 1; return acc; }, {});
+    let commReportStr = state.communityReports?.length > 0 ? `🟢 Passable: ${counts.None || 0}\n🟡 Ankle: ${counts.Sakong || 0}\n🟠 Knee: ${counts.Tuhod || 0}\n🔴 High: ${(counts.Tao || 0) + (counts.Lagpas || 0)}` : "No reports from residents yet.";
 
-    // Scoring
     let score = 0;
     let reasons = [];
     if (laMesaStatus === "HIGH RISK") { score += 40; reasons.push("High upstream water"); }
     else if (laMesaStatus === "PREPARE") { score += 25; reasons.push("Upstream pressure rising"); }
-    
     if (ugongStatus === "HIGH RISK") { score += 30; reasons.push("Local river critical"); }
     if (counts.Tao || counts.Lagpas) { score += 20; reasons.push("Resident flood reports"); }
     if (rainfall === "RED") { score += 45; reasons.push("Heavy rainfall active"); }
@@ -118,7 +109,6 @@ async function checkRiver() {
     const barCount = Math.floor(score / 10);
     const riskBar = vibe.bar.repeat(barCount) + "░ ".repeat(10 - barCount);
 
-    // --- PREMIUM DASHBOARD ---
     const dashboard = 
 `${testHeader}🛟 <b>FLOOD GUARD VALENZUELA</b>
 ━━━━━━━━━━━━━━━━
@@ -126,14 +116,14 @@ async function checkRiver() {
 📍 <b>AREA</b>
 ${config.areaName}
 
-🌊 <b>RIVER STATUS</b>
+🌊 <b>RIVER STATUS</b> <a href="${RIVER_URL}">🔗 Source</a>
 La Mesa       ${emojiStatus(laMesaStatus)} ${laMesaStatus} (${laMesa?.current?.toFixed(2) || "N/A"})
 ${config.nearbyRiver.split(' ')[0]}         ${emojiStatus(ugongStatus)} ${ugongStatus} (${ugong?.current?.toFixed(2) || "0.00"})
 
 📈 <b>TREND</b>
 ${trendText}
 
-🌧 <b>WEATHER</b>
+🌧 <b>WEATHER</b> <a href="${WEATHER_URL}">🔗 Source</a>
 ${rainfall === "NONE" ? "🟢 Normal Rainfall" : `⚠️ ${rainfall} Warning`}
 
 🧠 <b>FLOOD RISK</b>
@@ -151,11 +141,9 @@ ${score >= 71 ? "Situation is critical. Prepare for evacuation." :
   score >= 46 ? "Prepare mode. Move valuables to higher ground." : 
   score >= 21 ? "Observe mode muna. Silip lang paminsan 👀" : "Chill mode — safe and stable."}`;
 
-    // Update state
     state.latestDashboard = dashboard;
-    state.latestRiverUpdate = `${testHeader}🌊 <b>RIVER DETAILS</b>\n━━━━━━━━━━━━━━\n<b>La Mesa:</b> ${laMesa?.current?.toFixed(2)}m\n<b>Status:</b> ${laMesaStatus}\n\n<b>Community:</b>\n${commReportStr}`;
-    state.latestTrendUpdate = `${testHeader}📈 <b>MOVEMENT & TREND</b>\n━━━━━━━━━━━━━━\n<b>Status:</b> ${trendText}\n<b>Last:</b> ${prevLaMesa?.toFixed(2)}m\n<b>New:</b> ${laMesa?.current?.toFixed(2)}m`;
-
+    state.latestRiverUpdate = `${testHeader}🌊 <b>RIVER DETAILS</b>\n━━━━━━━━━━━━━━\n<b>La Mesa:</b> ${laMesa?.current?.toFixed(2)}m\n<b>Status:</b> ${laMesaStatus}\n\n<b>Source:</b> <a href="${RIVER_URL}">PAGASA Water Level</a>\n\n<b>Community:</b>\n${commReportStr}`;
+    
     const prediction = generatePrediction(state, { laMesa, ugong });
     state.latestPredictionUpdate = `${testHeader}${prediction.message.replace(testHeader, "")}`;
     state.latestChecklist = generateChecklist(prediction.status);
@@ -168,35 +156,16 @@ ${score >= 71 ? "Situation is critical. Prepare for evacuation." :
     const changed = snapshot !== state.lastDashboardSnapshot;
     
     const lastSnapshot = JSON.parse(state.lastDashboardSnapshot || "{}");
-    const oldPredictionStatus = lastSnapshot.predictionStatus || "Stable";
-    const statusOrder = ["Stable", "Possible Rise 👀", "Rising Risk ⚠️", "High Flood Potential 🚨"];
-    const oldIndex = statusOrder.indexOf(oldPredictionStatus);
-    const newIndex = statusOrder.indexOf(prediction.status);
-    const lastAlertTime = state.lastAlertTime || 0;
-
-    if (newIndex > oldIndex) {
-      if (prediction.status !== state.lastAlertedStatus || (now - lastAlertTime > 7200000)) {
-        const escalationAlert = 
-`${testHeader}🚨 <b>RISK ESCALATION</b>
-━━━━━━━━━━━━━━━━
-<b>${config.areaName}</b>
-
-<b>Risk:</b>
-${emojiStatus(prediction.status.includes("High") ? "HIGH RISK" : prediction.status.includes("Rising") ? "PREPARE" : "OBSERVE")} ${prediction.status.toUpperCase()}
-
-<b>Reason:</b>
-${prediction.reasons.map(r => `• ${r}`).join("\n")}
-
-❤️ <b>Suggestion:</b>
-${prediction.status.includes("High") ? "Prepare emergency bag. Monitor evacuation orders." : "Charge phones while early. Observe drainage."}`;
-        
+    if (statusOrder(prediction.status) > statusOrder(lastSnapshot.predictionStatus || "Stable")) {
+      if (prediction.status !== state.lastAlertedStatus || (now - state.lastAlertTime > 7200000)) {
+        const escalationAlert = `${testHeader}🚨 <b>RISK ESCALATION</b>\n━━━━━━━━━━━━━━━━\n<b>${config.areaName}</b>\n\n<b>Risk:</b>\n${emojiStatus(prediction.status.includes("High") ? "HIGH RISK" : prediction.status.includes("Rising") ? "PREPARE" : "OBSERVE")} ${prediction.status.toUpperCase()}\n\n<b>Reason:</b>\n${prediction.reasons.map(r => `• ${r}`).join("\n")}\n\n❤️ <b>Suggestion:</b>\n${prediction.status.includes("High") ? "Prepare emergency bag. Monitor evacuation orders." : "Charge phones while early. Observe drainage."}\n\n🔗 <b>Verify:</b> <a href="${WEATHER_URL}">PAGASA Website</a>`;
         await broadcastTelegram(escalationAlert);
         state.lastAlertedStatus = prediction.status;
         state.lastAlertTime = now;
       }
-    } else if (newIndex < oldIndex) {
+    } else if (statusOrder(prediction.status) < statusOrder(lastSnapshot.predictionStatus || "Stable")) {
       if (prediction.status !== state.lastAlertedStatus) {
-        await broadcastTelegram(`${testHeader}✅ <b>SITUATION EASING</b>\nRisk lowered to ${prediction.status.toUpperCase()}\n\nStill monitor weather, but less concern for now ❤️`);
+        await broadcastTelegram(`${testHeader}✅ <b>SITUATION EASING</b>\nRisk lowered to ${prediction.status.toUpperCase()}\n\nStill monitor weather, but less concern for now ❤️\n\n🔗 <b>Reference:</b> <a href="${WEATHER_URL}">PAGASA</a>`);
         state.lastAlertedStatus = prediction.status;
         state.lastAlertTime = now;
       }
@@ -210,16 +179,15 @@ ${prediction.status.includes("High") ? "Prepare emergency bag. Monitor evacuatio
     console.error("River Monitor Error:", error.message);
     state.health.riverMonitor = "Offline";
     state.health.lastCheck = now;
-    const lastSuccess = state.health.lastSuccessfulRiverCheck || 0;
-    const mins = Math.floor((now - lastSuccess) / 60000);
-    if (mins >= 60 && !state.health.riverStaleAlerted) {
-      await sendTelegram(`⚠️ <b>Data Delay</b>\nRiver source unavailable. Using last known (${mins} mins ago).`);
-      state.health.riverStaleAlerted = true;
-    }
     writeState(state);
   } finally {
     if (browser) await browser.close();
   }
+}
+
+function statusOrder(status) {
+  const order = ["Stable", "Possible Rise 👀", "Rising Risk ⚠️", "High Flood Potential 🚨"];
+  return order.indexOf(status);
 }
 
 export default checkRiver;
