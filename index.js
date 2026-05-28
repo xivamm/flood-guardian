@@ -1,9 +1,21 @@
 import "dotenv/config";
+import express from "express";
 import checkRiver from "./riverMonitor.js";
 import checkRainfall from "./rainfallMonitor.js";
 import checkCommands from "./telegramCommands.js";
 import { readState, writeState } from "./stateManager.js";
 import { sendTelegram } from "./notifier.js";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("Flood Guardian Online");
+});
+
+app.listen(PORT, () => {
+  console.log(`📡 Health server listening on port ${PORT}`);
+});
 
 async function main() {
   console.log("🚀 Flood Guardian starting...");

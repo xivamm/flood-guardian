@@ -1,25 +1,16 @@
 {
   "lastRainWarning": null,
-  "lastLaMesaLevel": 79.87,
+  "lastLaMesaLevel": 79.86,
   "lastUgongLevel": 0,
-  "latestDashboard": "🛟 <b>FLOOD GUARDIAN DASHBOARD</b>\n━━━━━━━━━━━━━━\n\n📍 <b>Tullahan / Valenzuela side</b>\n🌊 <b>River Status:</b>\n• La Mesa: 🔴 CRITICAL (79.87)\n• Ugong influence: ⚪ OFFLINE (0.00)\n\n📈 <b>Trend:</b> ➡ Stable\n🌧 <b>Weather:</b> 🟢 Normal\n\n🧠 <b>FLOOD RISK:</b> 40%\n👀 <b>OBSERVE MODE</b>\n🟨🟨🟨🟨⬜⬜⬜⬜⬜⬜\n\n💡 <b>Why?</b>\n• High upstream water\n\n👥 <b>Community Reports (Last 3h):</b>\n• None: 1 report\n\n❤️ <b>Advice:</b>\nObserve mode — check for updates.",
-  "latestRiverUpdate": "🌊 <b>RIVER DETAILS</b>\n━━━━━━━━━━━━━━\n<b>La Mesa:</b> 79.87m\n<b>Status:</b> CRITICAL\n\n<b>Community Feedback:</b>\n• None: 1 report",
+  "latestDashboard": "🛟 <b>FLOOD GUARDIAN DASHBOARD</b>\n━━━━━━━━━━━━━━\n\n📍 <b>Tullahan / Valenzuela side</b>\n🌊 <b>River Status:</b>\n• La Mesa: 🔴 CRITICAL (79.86)\n• Ugong influence: ⚪ OFFLINE (0.00)\n\n📈 <b>Trend:</b> ➡ Stable\n🌧 <b>Weather:</b> 🟢 Normal\n\n🧠 <b>FLOOD RISK:</b> 40%\n👀 <b>OBSERVE MODE</b>\n🟨🟨🟨🟨⬜⬜⬜⬜⬜⬜\n\n💡 <b>Why?</b>\n• High upstream water\n\n👥 <b>Community Reports (Last 3h):</b>\n• None: 1 report\n\n❤️ <b>Advice:</b>\nObserve mode — check for updates.",
+  "latestRiverUpdate": "🌊 <b>RIVER DETAILS</b>\n━━━━━━━━━━━━━━\n<b>La Mesa:</b> 79.86m\n<b>Status:</b> CRITICAL\n\n<b>Community Feedback:</b>\n• None: 1 report",
   "latestWeatherUpdate": "🌦 <b>WEATHER & FORECAST</b>\n━━━━━━━━━━━━━━\n📍 <b>Area:</b> NCR / Valenzuela\n📢 <b>Live Status:</b> 🟢 NO RAIN WARNING\n\n🔮 <b>Forecast (Next 24h):</b>\nMonsoon rains (Habagat) expected.\n\n☀️ Mukhang stable ang panahon.",
-  "latestTrendUpdate": "📈 <b>MOVEMENT & TREND</b>\n━━━━━━━━━━━━━━\n<b>Movement:</b> ➡ Stable\n<b>Last:</b> 79.87m\n<b>New:</b> 79.87m",
+  "latestTrendUpdate": "📈 <b>MOVEMENT & TREND</b>\n━━━━━━━━━━━━━━\n<b>Movement:</b> ➡ Stable\n<b>Last:</b> 79.87m\n<b>New:</b> 79.86m",
   "latestPredictionUpdate": "🧠 <b>FLOOD PREDICTION</b>\n━━━━━━━━━━━━━━\n<b>Forecast:</b> Stable\n<b>Confidence:</b> 85%\n\n💡 <b>Reasons:</b>\n• Environment is stable\n\n❤️ <b>Advice:</b>\nMag-ingat po parati.\n\n📍 Tullahan / Valenzuela side",
   "latestStormUpdate": "🌀 <b>STORM WATCH</b>\n━━━━━━━━━━━━━━\n<b>Status:</b> Tropical storm jangmi\n<b>Relevance:</b> Enhancing Southwest Monsoon (Habagat). Expect heavy rains.\n\n💡 <b>Tullahan/Valenzuela Risk:</b>\n⚠️ Possible river rise due to enhanced monsoon or direct rain.\n\n❤️ <b>Advice:</b>\nStay tuned to PAGASA updates. Secure outdoor items.",
   "lastDashboardSnapshot": "{\"laMesaStatus\":\"CRITICAL\",\"rainfall\":\"NONE\",\"trendText\":\"➡ Stable\",\"score\":40,\"predictionStatus\":\"Stable\"}",
-  "lastUpdateId": 676915901,
+  "lastUpdateId": 676915902,
   "history": [
-    {
-      "timestamp": "2026-05-28T07:08:05.117Z",
-      "laMesaLevel": 79.86,
-      "ugongLevel": 0,
-      "rainfall": "NONE",
-      "score": 40,
-      "trend": "➡ Stable",
-      "isTest": false
-    },
     {
       "timestamp": "2026-05-28T07:08:35.032Z",
       "laMesaLevel": 79.86,
@@ -118,6 +109,15 @@
       "score": 40,
       "trend": "➡ Stable",
       "isTest": false
+    },
+    {
+      "timestamp": "2026-05-28T07:40:43.722Z",
+      "laMesaLevel": 79.86,
+      "ugongLevel": 0,
+      "rainfall": "NONE",
+      "score": 40,
+      "trend": "➡ Stable",
+      "isTest": false
     }
   ],
   "lastAlertedStatus": "Stable",
@@ -143,9 +143,9 @@
   "health": {
     "riverMonitor": "Online",
     "weatherMonitor": "Online",
-    "lastCheck": 1779953703141,
-    "lastSuccessfulRiverCheck": 1779953703141,
-    "lastSuccessfulWeatherCheck": 1779953688262,
+    "lastCheck": 1779954034035,
+    "lastSuccessfulRiverCheck": 1779954034035,
+    "lastSuccessfulWeatherCheck": 1779954015820,
     "watchdogAlerted": false,
     "weatherStaleAlerted": false,
     "riverStaleAlerted": false
