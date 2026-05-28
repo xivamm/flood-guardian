@@ -49,11 +49,10 @@ export async function broadcastTelegram(message) {
 export const KEYBOARDS = {
   main: {
     keyboard: [
-      [{ text: "/status" }, { text: "/predict" }],
-      [{ text: "/weather" }, { text: "/storm" }],
-      [{ text: "/checklist" }, { text: "/report" }],
-      [{ text: "/emergency" }, { text: "/map" }],
-      [{ text: "/help" }]
+      [{ text: "/status" }, { text: "/predict" }, { text: "/trend" }],
+      [{ text: "/weather" }, { text: "/storm" }, { text: "/map" }],
+      [{ text: "/checklist" }, { text: "/report" }, { text: "/emergency" }],
+      [{ text: "/help" }, { text: "/history" }]
     ],
     resize_keyboard: true,
     persistent: true

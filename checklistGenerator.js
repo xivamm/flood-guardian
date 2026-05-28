@@ -12,55 +12,52 @@ export function generateChecklist(predictionStatus) {
   let title = "✅ ALL CLEAR";
   let subtitle = "Environment is stable. Chill mode muna.";
 
-  if (predictionStatus.includes("High Flood Potential")) {
-    title = "🚨 HIGH PRIORITY ACTIONS";
-    subtitle = "Situation is critical. Prepare for possible evacuation.";
+  if (predictionStatus.includes("High")) {
+    title = "🔴 HIGH PRIORITY";
+    subtitle = "Critical Situation. Act now.";
     checklist = [
       "🎒 Pack emergency bag (Clothes, Meds, Food)",
-      "🔌 Unplug appliances & move to higher ground",
-      "📻 Monitor Valenzuela City official advisories",
-      "📱 Keep communication lines open 24/7",
-      "🚗 Plan your route to the nearest evacuation center"
+      "🔌 Unplug appliances & move to high ground",
+      "📻 Monitor official Valenzuela City alerts",
+      "📱 Keep communication lines open",
+      "🚗 Know your nearest evacuation route"
     ];
-  } else if (predictionStatus.includes("Rising Risk")) {
-    title = "⚠️ PREPAREDNESS CHECKLIST";
-    subtitle = "Risk is increasing. Good idea to prepare while early ❤️";
+  } else if (predictionStatus.includes("Risk")) {
+    title = "🟠 PREPAREDNESS";
+    subtitle = "Risk is increasing. Stay ready.";
     checklist = [
       "🔋 Charge phones and powerbanks now",
-      "📄 Secure important documents in plastic bags",
+      "📄 Secure documents in plastic/waterproof bags",
       "🔦 Prepare flashlight and spare batteries",
       "🛣️ Monitor nearby street flood levels",
       "🧹 Check if drainage near your house is clear"
     ];
-  } else if (predictionStatus.includes("Possible Rise")) {
-    title = "👀 OBSERVATION LIST";
-    subtitle = "Medyo may ulan o pagtaas. Silip lang paminsan.";
+  } else if (predictionStatus.includes("Rise")) {
+    title = "🟡 OBSERVATION";
+    subtitle = "Medyo may ulan. Silip lang paminsan.";
     checklist = [
       "📱 Keep your phone nearby and charged",
-      "🌊 Observe river movement and nearby drainage",
+      "🌊 Observe river and nearby drainage",
       "🌧️ Monitor weather updates every hour",
       "🏠 Ensure pets are in a safe spot"
     ];
   }
 
-  // Night Mode Additions
   if (isNight && checklist.length > 0) {
-    if (!checklist.includes("🔦 Prepare flashlight and spare batteries")) {
-      checklist.unshift("🔦 Keep a flashlight within reach by your bed");
-    }
-    checklist.unshift("🔋 Ensure phones are plugged in before sleeping");
+    checklist.unshift("🔋 Plug in phones before sleeping");
+    checklist.unshift("🔦 Keep a light within reach by your bed");
   }
 
-  // Location Specifics
-  if (checklist.length > 0) {
-    checklist.push(`📍 Note: High risk of ${config.characteristics?.primaryRisk || "river flooding"}`);
-  }
-
+  // --- PREMIUM CHECKLIST UI ---
   const message = 
-`📋 <b>${title}</b>
-━━━━━━━━━━━━━━
-${subtitle}
+`📋 <b>EMERGENCY CHECKLIST</b>
+━━━━━━━━━━━━━━━━
 
+<b>STATUS</b>
+${title}
+<i>${subtitle}</i>
+
+<b>ACTIONS</b>
 ${checklist.length > 0 ? checklist.map(item => `• ${item}`).join("\n") : "• No immediate actions needed."}
 
 ❤️ <b>Stay safe, ${config.areaName.split(' ')[0]}!</b>`;

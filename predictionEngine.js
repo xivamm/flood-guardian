@@ -27,16 +27,13 @@ export function generatePrediction(state, currentData) {
   }
 
   // 2. Analyze La Mesa Trend
-  let isLaMesaRising = false;
   if (laMesa && state.lastLaMesaLevel) {
     const laMesaDiff = laMesa.current - state.lastLaMesaLevel;
     if (laMesaDiff >= 0.05) {
       score += 30;
-      isLaMesaRising = true;
       reasons.push("La Mesa rising significantly");
     } else if (laMesaDiff >= 0.02) {
       score += 15;
-      isLaMesaRising = true;
       reasons.push("La Mesa showing steady rise");
     }
   }
@@ -47,7 +44,7 @@ export function generatePrediction(state, currentData) {
     const recent = history.slice(-3);
     const risingCount = recent.filter((h, i) => {
       if (i === 0) return false;
-      return h.laMesaLevel > recent[i-1].laMesaLevel;
+      return h.laMesaLevel > (recent[i-1].laMesaLevel || 0);
     }).length;
 
     if (risingCount >= 2 && rainfall !== "NONE") {
@@ -59,18 +56,11 @@ export function generatePrediction(state, currentData) {
 
   // 4. Map score to prediction
   let status = "Stable";
-  let advice = "No immediate threat. Safe and stable.";
-
-  if (score >= 80) {
-    status = "High Flood Potential 🚨";
-  } else if (score >= 50) {
-    status = "Rising Risk ⚠️";
-  } else if (score >= 20) {
-    status = "Possible Rise 👀";
-  }
+  if (score >= 80) status = "High Flood Potential 🚨";
+  else if (score >= 50) status = "Rising Risk ⚠️";
+  else if (score >= 20) status = "Possible Rise 👀";
 
   // 5. Confidence Score (60-95%)
-  // Base confidence on history length and consistency
   let confidenceVal = 65;
   if (history.length > 5) confidenceVal += 10;
   if (history.length > 10) confidenceVal += 10;
@@ -81,43 +71,34 @@ export function generatePrediction(state, currentData) {
   const hour = new Date().getHours();
   const isNight = hour >= 20 || hour < 5;
   const isMorning = hour >= 5 && hour < 12;
+  let advice = config.customAdvice || "Everything seems stable for now. Chill mode muna.";
 
-  if (status === "High Flood Potential 🚨") {
-    advice = isNight 
-      ? "🚨 Gising muna tayo. Pack your essentials and stay ready to move." 
-      : "🚨 Prepare for evacuation. Don't wait for the water to reach your door.";
-  } else if (status === "Rising Risk ⚠️") {
-    advice = isNight
-      ? "⚠️ Rising levels at night. Charge your phones and keep a flashlight nearby."
-      : "⚠️ Monitoring situation closely. Best to move valuables to higher ground.";
-  } else if (status === "Possible Rise 👀") {
-    advice = isMorning
-      ? "👀 Possible rise this morning. Observe muna tayo habang maliwanag."
-      : "👀 Stay alert. Situation might change, monitor every hour.";
-  } else {
-    advice = config.customAdvice || "Everything seems stable for now. Chill mode muna.";
+  if (status.includes("High")) {
+    advice = isNight ? "🚨 Gising muna tayo. Pack your essentials and stay ready." : "🚨 Prepare for evacuation. Monitor official orders.";
+  } else if (status.includes("Risk")) {
+    advice = isNight ? "⚠️ Rising levels at night. Charge phones and keep lights nearby." : "⚠️ Moving valuables to higher ground is recommended.";
+  } else if (status.includes("Rise")) {
+    advice = isMorning ? "👀 Possible rise this morning. Observe muna tayo habang maliwanag." : "👀 Stay alert. Monitor dashboard every hour.";
   }
 
-  // Build the message
+  // --- PREMIUM PREDICTION UI ---
   const message = 
 `🧠 <b>FLOOD PREDICTION</b>
-━━━━━━━━━━━━━━
-<b>Forecast:</b> ${status}
-<b>Confidence:</b> ${confidenceVal}%
+━━━━━━━━━━━━━━━━
 
-💡 <b>Reasons:</b>
+<b>FORECAST</b>
+${status.toUpperCase()}
+
+<b>CONFIDENCE</b>
+${confidenceVal}% Accurate Score
+
+💡 <b>REASONS</b>
 ${reasons.length ? reasons.map(r => `• ${r}`).join("\n") : "• Environment is stable"}
 
-❤️ <b>Advice:</b>
+❤️ <b>ADVICE</b>
 ${advice}
 
 📍 ${config.areaName}`;
 
-  return {
-    status,
-    confidence: confidenceVal,
-    reasons,
-    score,
-    message
-  };
+  return { status, confidence: confidenceVal, reasons, score, message };
 }
