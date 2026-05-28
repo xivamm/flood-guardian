@@ -77,6 +77,7 @@ function getDefaultState() {
     latestTrendUpdate: null,
     latestPredictionUpdate: null,
     latestStormUpdate: null,
+    latestLocalWeather: null,
     lastDashboardSnapshot: null,
     lastUpdateId: 0,
     history: [],

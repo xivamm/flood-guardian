@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer";
 import { sendTelegram, broadcastTelegram } from "./notifier.js";
 import { readState, writeState } from "./stateManager.js";
+import { getDetailedLocalWeather, getRainIntensity } from "./weatherService.js";
 
 async function checkRainfall() {
   let browser;
@@ -10,6 +11,7 @@ async function checkRainfall() {
   const WEATHER_URL = "https://www.pagasa.dost.gov.ph";
 
   try {
+    // --- PART 1: PAGASA Scraping (Warnings & Storms) ---
     let text = "";
     let pageText = "";
 
@@ -48,10 +50,20 @@ async function checkRainfall() {
       else stormRelevance = "Inside PAR. Monitoring movement.";
     }
 
-    let forecast = "Metro Manila: Partly cloudy to cloudy skies.";
-    if (text.includes("thunderstorm")) forecast = "Expected thunderstorms later today.";
-    else if (text.includes("isolated rain")) forecast = "Isolated rain showers expected.";
-    else if (text.includes("monsoon") || text.includes("habagat")) forecast = "Monsoon rains (Habagat) expected.";
+    // --- PART 2: Detailed Local Weather (Gen T de Leon / Valenzuela) ---
+    const local = await getDetailedLocalWeather();
+    let localWeatherStr = "Local metrics unavailable.";
+    if (local) {
+      localWeatherStr = 
+`📍 <b>GEN T. DE LEON AREA</b>
+🌡️ <b>Temp:</b> ${local.temp}°C
+🌬️ <b>Wind:</b> ${local.windSpeed} km/h
+💧 <b>Humidity:</b> ${local.humidity}%
+🌧️ <b>Rainfall:</b> ${local.rainMM}mm (${getRainIntensity(local.rainMM)})
+🎲 <b>Rain Chance:</b> ${local.rainChance}%`;
+      
+      state.latestLocalWeather = local;
+    }
 
     state.health.weatherMonitor = "Online";
     state.health.lastSuccessfulWeatherCheck = now;
@@ -65,18 +77,14 @@ async function checkRainfall() {
 `${testHeader}🌧 <b>WEATHER & FORECAST</b>
 ━━━━━━━━━━━━━━━━
 
-📍 <b>AREA</b>
-NCR / Valenzuela
-
-📢 <b>LIVE STATUS</b>
+📢 <b>PAGASA STATUS</b>
 ${weatherIcon} ${weatherLabel}
 
-🔮 <b>FORECAST (NEXT 24H)</b>
-${forecast}
+${localWeatherStr}
 
-🔗 <b>Source:</b> <a href="${WEATHER_URL}">PAGASA Website</a>
+🔗 <a href="${WEATHER_URL}">🔗 Source (PAGASA)</a>
 
-${warning ? "⚠️ May active rainfall warning. Ingat po!" : "☀️ Mukhang stable ang panahon."}`;
+${warning || (local && parseFloat(local.rainMM) > 7.5) ? "⚠️ May active weather concern. Ingat po!" : "☀️ Mukhang stable ang panahon."}`;
 
     const stormUpdate = 
 `${testHeader}🌀 <b>STORM WATCH</b>
@@ -100,6 +108,14 @@ ${stormName ? "Stay tuned to PAGASA updates. Secure items." : "Safe and clear fo
     if (warning && warning !== state.lastRainWarning) shouldAlert = true;
     if (stormName && stormName !== state.lastStormName) shouldAlert = true;
     
+    // Proactive Alert for Heavy Local Rain (even if PAGASA is silent)
+    if (local && parseFloat(local.rainMM) >= 7.5 && !state.lastLocalRainAlerted) {
+      shouldAlert = true;
+      state.lastLocalRainAlerted = true;
+    } else if (local && parseFloat(local.rainMM) < 2.5) {
+      state.lastLocalRainAlerted = false;
+    }
+
     state.latestWeatherUpdate = weatherUpdate;
     state.latestStormUpdate = stormUpdate;
     state.lastRainWarning = warning;
